@@ -23,8 +23,8 @@ public class FrameStack {
       top = new StackNode(value);
       bottom = top;
     } else {
-      bottom.below = new StackNode(value, bottom, null);
-      bottom = bottom.below;
+      top.setAbove(new StackNode(value, null, top));
+      top = top.getAbove();
     }
     System.out.println("Page Fault: no page evicted; page " + value + " brought into memory");
     numFaults++;
@@ -47,6 +47,7 @@ public class FrameStack {
         }
         current.setBelow(top);
         current.setAbove(null);
+        top = current;
         return;
       }
       current = current.getBelow();
@@ -55,9 +56,15 @@ public class FrameStack {
   }
   private void pageFault(int value) {
     System.out.println("Page Fault: page " + bottom.getValue() + " evicted; page " + value + " brought into memory");
-    bottom = bottom.getAbove();
-    top.setAbove(new StackNode(value, null, top);
-    top = top.getAbove();
+    if(top == bottom) {
+      top = new StackNode(value);
+      bottom = top;
+    } else {
+      bottom = bottom.getAbove();
+      bottom.setBelow(null);
+      top.setAbove(new StackNode(value, null, top));
+      top = top.getAbove();
+    }
     numFaults++;
   }
 }

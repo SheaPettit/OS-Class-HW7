@@ -7,7 +7,7 @@ public class StackNode {
     this.below = null;
     this.value = value;
   }
-  public StackNode(StackNode above, StackNode below, int value) {
+  public StackNode(int value, StackNode above, StackNode below) {
     this.above = above;
     this.below = below;
     this.value = value;
